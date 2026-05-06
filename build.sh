@@ -7,5 +7,5 @@ pip install -r requirements.txt
 python manage.py collectstatic --no-input
 python manage.py migrate
 
-# Ensure media directory exists
-mkdir -p media
+# Ensure uploads directory exists (equivalent to app.use('/uploads', express.static('uploads')))
+mkdir -p uploads
