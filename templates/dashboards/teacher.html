@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Teacher Dashboard - AssignMate{% endblock %}
+
+{% block content %}
+<div class="glass-card mb-4 flex-responsive">
+    <div>
+        <h2><i class="fa-solid fa-chalkboard-user" style="color: var(--primary-color);"></i> Teacher Dashboard</h2>
+        <p>Welcome back, <strong>{{ user.username }}</strong>. Manage your assignments and track student progress.</p>
+    </div>
+    <a href="{% url 'assignment_create' %}" class="btn-primary" style="width:auto;"><i class="fa-solid fa-plus"></i> Create Assignment</a>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card glass-card">
+        <i class="fa-solid fa-file-signature stat-icon"></i>
+        <h3 style="margin:0; font-size:2rem;">{{ assignments.count|default:"0" }}</h3>
+        <p class="text-muted" style="margin:0;">Active Assignments</p>
+    </div>
+</div>
+
+<h3><i class="fa-solid fa-layer-group" style="color: var(--primary-color);"></i> Your Assignments</h3>
+<div class="dashboard-grid">
+    {% for assignment in assignments %}
+    <div class="glass-card assignment-card">
+        <div>
+            <h4>{{ assignment.title }}</h4>
+            <div class="subject"><i class="fa-solid fa-tag"></i> {{ assignment.subject }}</div>
+            <div class="assignment-meta">
+                <i class="fa-regular fa-calendar-xmark"></i> Deadline: {{ assignment.deadline }}
+            </div>
+        </div>
+        <div class="card-actions" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+            <a href="{% url 'assignment_detail' assignment.id %}" class="btn-primary" style="grid-column: 1 / -1;"><i class="fa-solid fa-inbox"></i> Submissions</a>
+            <a href="{% url 'assignment_update' assignment.id %}" class="btn-primary btn-warning text-center"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+            <a href="{% url 'assignment_delete' assignment.id %}" class="btn-primary btn-danger text-center"><i class="fa-solid fa-trash-can"></i> Delete</a>
+        </div>
+    </div>
+    {% empty %}
+    <div class="glass-card" style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+        <i class="fa-solid fa-folder-open stat-icon" style="color: var(--text-secondary);"></i>
+        <h3>No Assignments Yet</h3>
+        <p class="text-muted">You haven't created any assignments yet.</p>
+        <a href="{% url 'assignment_create' %}" class="btn-primary mt-4" style="width: auto;"><i class="fa-solid fa-plus"></i> Create Your First Assignment</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

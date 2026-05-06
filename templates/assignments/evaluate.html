@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Evaluate Submission{% endblock %}
+
+{% block content %}
+<div class="glass-card mb-4" style="max-width: 800px; margin: 0 auto;">
+    <h2>Evaluate Submission</h2>
+    <div style="background: rgba(15, 23, 42, 0.4); padding: 1rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid var(--primary-color);">
+        <p><strong>Assignment:</strong> {{ submission.assignment.title }}</p>
+        <p><strong>Student:</strong> {{ submission.student.username }}</p>
+        <p><strong>Submitted At:</strong> {{ submission.submitted_at }} 
+            {% if submission.is_late %}
+                <span style="color:#ef4444; font-weight:bold;">(LATE: Deadline was {{ submission.assignment.deadline }})</span>
+            {% endif %}
+        </p>
+        <p><a href="{{ submission.file.url }}" target="_blank" class="btn-primary" style="width:auto; margin-top:0.5rem;">Download Submitted File</a></p>
+    </div>
+
+    <h3>Enter Marks</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+        <div style="display:flex; justify-content: space-between; margin-top:2rem;">
+            <a href="{% url 'assignment_detail' submission.assignment.id %}" style="padding: 0.75rem 1.5rem; text-decoration:none; color:var(--text-secondary);">Cancel</a>
+            <button type="submit" class="btn-primary" style="width:auto;">Save Evaluation</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.querySelectorAll('input:not([type="submit"]):not([type="hidden"]), select, textarea').forEach(input => {
+        input.classList.add('form-input');
+    });
+</script>
+{% endblock %}

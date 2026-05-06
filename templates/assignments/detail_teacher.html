@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Submissions: {{ assignment.title }}{% endblock %}
+
+{% block content %}
+<div class="glass-card mb-4">
+    <div class="flex-responsive">
+        <div>
+            <h2>{{ assignment.title }}</h2>
+            <p>Deadline: {{ assignment.deadline }}</p>
+        </div>
+        <div>
+            {% if assignment.file %}
+                <a href="{{ assignment.file.url }}" target="_blank" class="btn-primary" style="width:auto;">View Assignment File</a>
+            {% endif %}
+        </div>
+    </div>
+    {% if assignment.marking_criteria %}
+    <div style="background: rgba(79, 70, 229, 0.1); border-left: 4px solid var(--primary-color); padding: 1rem; margin-top: 1rem; border-radius: 4px;">
+        <p style="margin-top: 0;"><strong>Marking Criteria:</strong></p>
+        <p style="margin-bottom: 0;">{{ assignment.marking_criteria|linebreaksbr }}</p>
+    </div>
+    {% endif %}
+</div>
+
+<div class="glass-card">
+    <h3>Student Submissions ({{ submissions.count }})</h3>
+    <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+    {% for sub in submissions %}
+        <li class="flex-responsive" style="padding: 1rem; border-bottom: 1px solid var(--surface-border);">
+            <div>
+                <strong>Student:</strong> {{ sub.student.username }}<br>
+                <small class="text-muted">
+                    Submitted: {{ sub.submitted_at }}
+                    {% if sub.is_late %}
+                        <span style="color:#ef4444; font-weight:bold;">(LATE)</span>
+                    {% endif %}
+                </small><br>
+                {% if sub.mark %}
+                    <small>Evaluated: <strong style="color:var(--primary-color);">{{ sub.mark.marks }}</strong> points</small>
+                {% else %}
+                    <small style="color: #eab308;">Pending Evaluation</small>
+                {% endif %}
+            </div>
+            
+            <a href="{% url 'evaluate_submission' sub.id %}" class="btn-primary" style="padding:0.5rem 1rem; width:auto; text-align:center;">
+                {% if sub.mark %}Edit Evaluation{% else %}Evaluate{% endif %}
+            </a>
+        </li>
+    {% empty %}
+        <p class="text-muted text-center" style="padding: 2rem;">No students have submitted this assignment yet.</p>
+    {% endfor %}
+    </ul>
+</div>
+{% endblock %}

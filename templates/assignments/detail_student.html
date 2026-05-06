@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ assignment.title }} - AssignMate{% endblock %}
+
+{% block content %}
+<div class="glass-card mb-4">
+    <h2>{{ assignment.title }}</h2>
+    <p><strong>Subject:</strong> {{ assignment.subject }}</p>
+    <p><strong>Deadline:</strong> {{ assignment.deadline }}</p>
+    <p><strong>Description:</strong><br/>{{ assignment.description }}</p>
+    {% if assignment.marking_criteria %}
+    <div style="background: rgba(79, 70, 229, 0.1); border-left: 4px solid var(--primary-color); padding: 1rem; margin-top: 1rem; border-radius: 4px;">
+        <p style="margin-top: 0;"><strong>Marking Criteria:</strong></p>
+        <p style="margin-bottom: 0;">{{ assignment.marking_criteria|linebreaksbr }}</p>
+    </div>
+    {% endif %}
+    {% if assignment.file %}
+        <p><a href="{{ assignment.file.url }}" target="_blank" class="btn-primary" style="display:inline-block; margin-top:1rem; width:auto;">Download Assignment File</a></p>
+    {% endif %}
+</div>
+
+<div class="glass-card">
+    <h3>Your Submission</h3>
+    {% if submission %}
+        <div style="background: rgba(15, 23, 42, 0.4); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+            <p>You submitted on: <strong>{{ submission.submitted_at }}</strong></p>
+            {% if submission.is_late %}
+                <p style="color:#ef4444; font-weight:bold;">Status: LATE</p>
+            {% else %}
+                <p style="color:#22c55e; font-weight:bold;">Status: ON TIME</p>
+            {% endif %}
+            <p>File: <a href="{{ submission.file.url }}" target="_blank">View Your Submitted File</a></p>
+        </div>
+        
+        {% if hasattr %}
+            <!-- We check if there is an evaluation via template tag logic below -->
+        {% endif %}
+        
+        {% if getattr|default:False or True %}
+            <!-- Hack to catch related object nicely: -->
+            {% if submission.mark %}
+                <h4>Evaluation Result</h4>
+                <div style="border-left: 4px solid var(--primary-color); padding-left: 1rem; margin-top: 1rem;">
+                    <p><strong>Marks:</strong> <span style="font-size: 1.25rem;">{{ submission.mark.marks }}</span></p>
+                    <p><strong>Feedback:</strong><br>{{ submission.mark.feedback }}</p>
+                </div>
+            {% else %}
+                <p class="text-muted">Your submission has not been evaluated yet.</p>
+            {% endif %}
+        {% endif %}
+
+    {% else %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-primary mt-4">Submit Assignment</button>
+        </form>
+    {% endif %}
+</div>
+
+<script>
+    document.querySelectorAll('input:not([type="submit"]):not([type="hidden"]), select, textarea').forEach(input => {
+        input.classList.add('form-input');
+    });
+</script>
+{% endblock %}

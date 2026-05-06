@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Assignment - AssignMate{% endblock %}
+
+{% block content %}
+<div class="glass-card" style="max-width: 600px; margin: 0 auto; text-align: center;">
+    <h2 style="color: #ef4444;">Delete Assignment</h2>
+    <p>Are you sure you want to delete the assignment <strong>"{{ assignment.title }}"</strong>?</p>
+    <p class="text-muted">This action cannot be undone. All submissions and marks associated with it will also be permanently deleted.</p>
+    
+    <form method="post" style="margin-top: 2rem;">
+        {% csrf_token %}
+        <div style="display: flex; justify-content: center; gap: 1rem;">
+            <a href="{% url 'teacher_dashboard' %}" class="btn-primary" style="background-color: transparent; border: 1px solid var(--primary-color); color: var(--primary-color); width: auto; padding: 0.6rem 1.5rem;">Cancel</a>
+            <button type="submit" class="btn-primary" style="background-color: #ef4444; width: auto; padding: 0.6rem 1.5rem;">Yes, Delete Assignment</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

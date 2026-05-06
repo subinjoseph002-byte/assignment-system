@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - AssignMate{% endblock %}
+
+{% block content %}
+{% load static %}
+<div class="auth-wrapper">
+    <div class="auth-image-side glass-card">
+        <img src="{% static 'images/illustration.png' %}" alt="Education Illustration" class="auth-illustration">
+        <div class="auth-image-text">
+            <h3>Join AssignMate Today</h3>
+            <p>Create an account to streamline your assignment workflow and never miss a deadline again.</p>
+        </div>
+    </div>
+    <div class="auth-container split-layout">
+        <div class="glass-card auth-box">
+            <h2 class="text-center mb-4">Create Account</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn-primary mt-4"><i class="fa-solid fa-user-plus"></i> Register</button>
+            </form>
+            <p class="text-center mt-4">
+                <span class="text-muted">Already have an account?</span> 
+                <a href="{% url 'login' %}">Login here</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Add CSS classes and icons to django generated forms
+    document.querySelectorAll('input, select').forEach(input => {
+        if(input.type !== 'hidden' && input.type !== 'submit' && input.type !== 'checkbox') {
+            input.classList.add('form-input');
+            
+            // Wrap in div for icon
+            const wrapper = document.createElement('div');
+            wrapper.className = 'input-with-icon';
+            input.parentNode.insertBefore(wrapper, input);
+            wrapper.appendChild(input);
+            
+            // Add icon
+            const icon = document.createElement('i');
+            if (input.name.includes('username')) icon.className = 'fa-solid fa-user';
+            else if (input.name.includes('password')) icon.className = 'fa-solid fa-lock';
+            else if (input.name.includes('email')) icon.className = 'fa-solid fa-envelope';
+            else if (input.name.includes('role')) icon.className = 'fa-solid fa-user-tag';
+            else icon.className = 'fa-solid fa-pen';
+            wrapper.appendChild(icon);
+        }
+    });
+</script>
+{% endblock %}

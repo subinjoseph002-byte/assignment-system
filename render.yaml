@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: assignment-system
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn assignment_system.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.0
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DJANGO_SETTINGS_MODULE
+        value: assignment_system.settings
+      - key: DATABASE_URL
+        placeholder: "mysql://user:password@host:port/dbname?ssl-mode=REQUIRED"

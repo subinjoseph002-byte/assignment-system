@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Dashboard - AssignMate{% endblock %}
+
+{% block content %}
+<div class="glass-card mb-4">
+    <div class="flex-responsive">
+        <div>
+            <h2><i class="fa-solid fa-graduation-cap" style="color: var(--primary-color);"></i> Student Dashboard</h2>
+            <p>Welcome back, <strong>{{ user.username }}</strong>. Here is your academic overview.</p>
+        </div>
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card glass-card">
+        <i class="fa-solid fa-book-open stat-icon"></i>
+        <h3 style="margin:0; font-size:2rem;">{{ assignments.count|default:"0" }}</h3>
+        <p class="text-muted" style="margin:0;">Pending Assignments</p>
+    </div>
+</div>
+
+<h3><i class="fa-solid fa-list-check" style="color: var(--primary-color);"></i> Pending Assignments</h3>
+<div class="dashboard-grid">
+    {% for assignment in assignments %}
+    <div class="glass-card assignment-card">
+        <div>
+            <h4>{{ assignment.title }}</h4>
+            <div class="subject"><i class="fa-solid fa-tag"></i> {{ assignment.subject }}</div>
+            <div class="assignment-meta">
+                <i class="fa-regular fa-calendar-xmark"></i> Deadline: {{ assignment.deadline }}
+            </div>
+            {% if assignment.marking_criteria %}
+            <div style="margin-bottom: 1rem;">
+                <span class="badge badge-success"><i class="fa-solid fa-clipboard-check"></i> Has Grading Criteria</span>
+            </div>
+            {% endif %}
+        </div>
+        <div class="card-actions">
+            <a href="{% url 'assignment_detail' assignment.id %}" class="btn-primary w-full"><i class="fa-solid fa-eye"></i> View Details & Submit</a>
+        </div>
+    </div>
+    {% empty %}
+    <div class="glass-card" style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+        <i class="fa-solid fa-glass-cheers stat-icon"></i>
+        <h3>All Caught Up!</h3>
+        <p class="text-muted">Hooray! You have no pending assignments at the moment.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

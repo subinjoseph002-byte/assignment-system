@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard - AssignMate{% endblock %}
+
+{% block content %}
+<div class="glass-card mb-4 flex-responsive">
+    <div>
+        <h2><i class="fa-solid fa-shield-halved" style="color: var(--primary-color);"></i> System Administration</h2>
+        <p>Welcome, <strong>{{ user.username }}</strong>. Overview of platform usage and metrics.</p>
+    </div>
+    <a href="/admin/" class="btn-primary" target="_blank" style="width:auto; background-color: #6366f1;"><i class="fa-solid fa-database"></i> Access Django Admin</a>
+</div>
+
+<!-- Statistics Grid -->
+<div class="stats-grid">
+    <div class="stat-card glass-card">
+        <i class="fa-solid fa-user-graduate stat-icon" style="color: #10b981;"></i>
+        <h3 style="margin:0; font-size:2.5rem; color:#10b981;">{{ total_students }}</h3>
+        <p class="text-muted" style="margin:0;">Total Students</p>
+    </div>
+    <div class="stat-card glass-card">
+        <i class="fa-solid fa-chalkboard-user stat-icon" style="color: #f59e0b;"></i>
+        <h3 style="margin:0; font-size:2.5rem; color:#f59e0b;">{{ total_teachers }}</h3>
+        <p class="text-muted" style="margin:0;">Total Teachers</p>
+    </div>
+    <div class="stat-card glass-card">
+        <i class="fa-solid fa-layer-group stat-icon" style="color: #3b82f6;"></i>
+        <h3 style="margin:0; font-size:2.5rem; color:#3b82f6;">{{ total_assignments }}</h3>
+        <p class="text-muted" style="margin:0;">Total Assignments</p>
+    </div>
+    <div class="stat-card glass-card">
+        <i class="fa-solid fa-file-arrow-up stat-icon" style="color: #8b5cf6;"></i>
+        <h3 style="margin:0; font-size:2.5rem; color:#8b5cf6;">{{ total_submissions }}</h3>
+        <p class="text-muted" style="margin:0;">Total Submissions</p>
+    </div>
+</div>
+
+<!-- Recent Assignments List -->
+<h3><i class="fa-solid fa-clock-rotate-left" style="color: var(--primary-color);"></i> Recently Added Assignments</h3>
+<div class="dashboard-grid">
+    {% for assignment in recent_assignments %}
+    <div class="glass-card assignment-card">
+        <div>
+            <h4>{{ assignment.title }}</h4>
+            <div class="subject"><i class="fa-solid fa-tag"></i> {{ assignment.subject }}</div>
+            <div class="assignment-meta">
+                <i class="fa-regular fa-calendar-xmark"></i> Deadline: {{ assignment.deadline }}
+            </div>
+            <div class="assignment-meta">
+                <i class="fa-solid fa-user-pen"></i> By: {{ assignment.created_by.username }}
+            </div>
+        </div>
+        <div class="card-actions">
+            <a href="{% url 'assignment_detail' assignment.id %}" class="btn-primary w-full"><i class="fa-solid fa-eye"></i> View Details</a>
+        </div>
+    </div>
+    {% empty %}
+    <div class="glass-card" style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+        <i class="fa-solid fa-folder-open stat-icon" style="color: var(--text-secondary);"></i>
+        <h3>No Activity Yet</h3>
+        <p class="text-muted">No assignments have been created in the system yet.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
