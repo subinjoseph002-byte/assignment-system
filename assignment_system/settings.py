@@ -83,9 +83,15 @@ DATABASES = {
     'default': dj_database_url.config(
         default='mysql://root:@localhost:3306/assignment_db',
         conn_max_age=600,
-        ssl_require=True if 'RENDER' in os.environ else False
     )
 }
+
+# TiDB Cloud (Serverless) specific SSL configuration for Render
+if 'RENDER' in os.environ:
+    DATABASES['default']['OPTIONS'] = {
+        'ssl': {'ca': '/etc/ssl/certs/ca-certificates.crt'}
+    }
+
 
 
 
