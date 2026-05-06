@@ -12,4 +12,4 @@ services:
       - key: DJANGO_SETTINGS_MODULE
         value: assignment_system.settings
       - key: DATABASE_URL
-        placeholder: "mysql://user:password@host:port/dbname?ssl-mode=REQUIRED"
+        sync: false
