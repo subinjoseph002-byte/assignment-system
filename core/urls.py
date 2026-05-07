@@ -18,8 +18,8 @@ urlpatterns = [
     path('submissions/<int:pk>/evaluate/', views.evaluate_submission, name='evaluate_submission'),
     path('notifications/<int:pk>/read/', views.mark_notification_read, name='mark_notification_read'),
     
-    # Custom Admin Actions
-    path('admin/change-role/<int:user_id>/', views.change_user_role, name='change_user_role'),
+    # Changed from 'admin/' to 'manage/' to avoid Django's internal admin interception
+    path('manage/change-role/<int:user_id>/', views.change_user_role, name='change_user_role'),
     
     path('', views.login_view, name='home'),
 ]
