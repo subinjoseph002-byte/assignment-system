@@ -52,7 +52,6 @@ body {
 .form-input {
   width: 100%;
   padding: 0.75rem 1rem;
-  margin-top: 0.5rem;
   margin-bottom: 1.5rem;
   background: rgba(15, 23, 42, 0.6);
   border: 1px solid var(--surface-border);
@@ -420,16 +419,19 @@ form label {
 /* Input Icons for Auth */
 .input-with-icon {
   position: relative;
+  margin-top: 0.5rem;
 }
 
 .input-with-icon i {
   position: absolute;
-  top: calc(50% + 0.5rem); /* Adjust based on label */
+  top: 50%;
   left: 1rem;
   transform: translateY(-50%);
   color: var(--text-secondary);
   pointer-events: none;
+  font-size: 0.9rem;
 }
+
 
 .input-with-icon input, .input-with-icon select {
   padding-left: 2.5rem;
