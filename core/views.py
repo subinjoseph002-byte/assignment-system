@@ -193,3 +193,16 @@ def mark_notification_read(request, pk):
     notification.is_read = True
     notification.save()
     return redirect(request.META.get('HTTP_REFERER', 'dashboard'))
+
+@login_required
+@role_required('admin')
+def change_user_role(request, user_id):
+    if request.method == 'POST':
+        user_to_change = get_object_or_404(User, id=user_id)
+        new_role = request.POST.get('role')
+        if new_role in ['admin', 'teacher', 'student']:
+            user_to_change.role = new_role
+            # Also ensure staff status for admins
+            user_to_change.is_staff = (new_role == 'admin')
+            user_to_change.save()
+    return redirect('admin_dashboard')
