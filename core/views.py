@@ -206,3 +206,12 @@ def change_user_role(request, user_id):
             user_to_change.is_staff = (new_role == 'admin')
             user_to_change.save()
     return redirect('admin_dashboard')
+
+@login_required
+@role_required('admin')
+def delete_user(request, user_id):
+    if request.method == 'POST':
+        user_to_delete = get_object_or_404(User, id=user_id)
+        if user_to_delete != request.user:
+            user_to_delete.delete()
+    return redirect('admin_dashboard')

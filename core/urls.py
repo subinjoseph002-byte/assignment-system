@@ -20,6 +20,7 @@ urlpatterns = [
     
     # Changed from 'admin/' to 'manage/' to avoid Django's internal admin interception
     path('manage/change-role/<int:user_id>/', views.change_user_role, name='change_user_role'),
+    path('manage/delete-user/<int:user_id>/', views.delete_user, name='delete_user'),
     
     path('', views.login_view, name='home'),
 ]
