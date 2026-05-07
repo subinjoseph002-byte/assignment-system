@@ -6,9 +6,9 @@
 <div class="glass-card mb-4 flex-responsive">
     <div>
         <h2><i class="fa-solid fa-shield-halved" style="color: var(--primary-color);"></i> System Administration</h2>
-        <p>Welcome, <strong>{{ user.username }}</strong>. Overview of platform usage and metrics.</p>
+        <p>Welcome, <strong>{{ user.username }}</strong>. Overview of platform usage and user management.</p>
     </div>
-    <a href="/admin/" class="btn-primary" target="_blank" style="width:auto; background-color: #6366f1;"><i class="fa-solid fa-database"></i> Access Django Admin</a>
+    <a href="/admin/" class="btn-primary" target="_blank" style="width:auto; background-color: #6366f1;"><i class="fa-solid fa-database"></i> Advanced Database Admin</a>
 </div>
 
 <!-- Statistics Grid -->
@@ -35,31 +35,59 @@
     </div>
 </div>
 
-<!-- Recent Assignments List -->
-<h3><i class="fa-solid fa-clock-rotate-left" style="color: var(--primary-color);"></i> Recently Added Assignments</h3>
-<div class="dashboard-grid">
-    {% for assignment in recent_assignments %}
-    <div class="glass-card assignment-card">
-        <div>
-            <h4>{{ assignment.title }}</h4>
-            <div class="subject"><i class="fa-solid fa-tag"></i> {{ assignment.subject }}</div>
-            <div class="assignment-meta">
-                <i class="fa-regular fa-calendar-xmark"></i> Deadline: {{ assignment.deadline }}
-            </div>
-            <div class="assignment-meta">
-                <i class="fa-solid fa-user-pen"></i> By: {{ assignment.created_by.username }}
-            </div>
-        </div>
-        <div class="card-actions">
-            <a href="{% url 'assignment_detail' assignment.id %}" class="btn-primary w-full"><i class="fa-solid fa-eye"></i> View Details</a>
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+    <!-- User Management Section -->
+    <div class="glass-card">
+        <h3><i class="fa-solid fa-users-gear" style="color: var(--primary-color);"></i> User Management</h3>
+        <div style="overflow-x: auto; margin-top: 1.5rem;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="border-bottom: 1px solid var(--surface-border); color: var(--text-muted);">
+                        <th style="padding: 1rem;">User</th>
+                        <th style="padding: 1rem;">Role</th>
+                        <th style="padding: 1rem;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in users %}
+                    <tr style="border-bottom: 1px solid var(--surface-border);">
+                        <td style="padding: 1rem;">
+                            <div style="font-weight: 600;">{{ u.username }}</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">{{ u.email }}</div>
+                        </td>
+                        <td style="padding: 1rem;">
+                            <span class="badge {% if u.role == 'admin' %}badge-danger{% elif u.role == 'teacher' %}badge-warning{% else %}badge-success{% endif %}">
+                                {{ u.role|upper }}
+                            </span>
+                        </td>
+                        <td style="padding: 1rem;">
+                            <a href="/admin/core/user/{{ u.id }}/change/" target="_blank" style="color: var(--primary-color); font-size: 0.9rem;">
+                                <i class="fa-solid fa-user-pen"></i> Edit Role
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
-    {% empty %}
-    <div class="glass-card" style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
-        <i class="fa-solid fa-folder-open stat-icon" style="color: var(--text-secondary);"></i>
-        <h3>No Activity Yet</h3>
-        <p class="text-muted">No assignments have been created in the system yet.</p>
+
+    <!-- Recent Assignments -->
+    <div class="glass-card">
+        <h3><i class="fa-solid fa-clock-rotate-left" style="color: var(--primary-color);"></i> Recent Activity</h3>
+        <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+            {% for assignment in recent_assignments %}
+            <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid var(--surface-border);">
+                <div style="font-weight: 600;">{{ assignment.title }}</div>
+                <div style="font-size: 0.8rem; color: var(--primary-color);">{{ assignment.subject }}</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">
+                    <i class="fa-regular fa-calendar"></i> {{ assignment.deadline|date:"M d, Y" }}
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted">No recent assignments.</p>
+            {% endfor %}
+        </div>
     </div>
-    {% endfor %}
 </div>
 {% endblock %}

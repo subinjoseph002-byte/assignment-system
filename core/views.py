@@ -47,12 +47,14 @@ def dashboard_view(request):
 @login_required
 @role_required('admin')
 def admin_dashboard(request):
+    users = User.objects.all().order_by('-date_joined')
     context = {
         'total_teachers': User.objects.filter(role='teacher').count(),
         'total_students': User.objects.filter(role='student').count(),
         'total_assignments': Assignment.objects.count(),
         'total_submissions': Submission.objects.count(),
-        'recent_assignments': Assignment.objects.order_by('-created_at')[:5]
+        'recent_assignments': Assignment.objects.order_by('-created_at')[:5],
+        'users': users
     }
     return render(request, 'dashboards/admin.html', context)
 
