@@ -17,8 +17,8 @@ class CustomUserAdmin(UserAdmin):
 
 @admin.register(Assignment)
 class AssignmentAdmin(admin.ModelAdmin):
-    list_display = ['title', 'subject', 'teacher', 'deadline']
-    list_filter = ['subject', 'teacher', 'deadline']
+    list_display = ['title', 'subject', 'created_by', 'deadline']
+    list_filter = ['subject', 'created_by', 'deadline']
     search_fields = ['title', 'description', 'subject']
 
 @admin.register(Submission)
