@@ -43,9 +43,11 @@
                 {% endif %}
             </div>
             
+            {% if user.role == 'teacher' %}
             <a href="{% url 'evaluate_submission' sub.id %}" class="btn-primary" style="padding:0.5rem 1rem; width:auto; text-align:center;">
                 {% if sub.mark %}Edit Evaluation{% else %}Evaluate{% endif %}
             </a>
+            {% endif %}
         </li>
     {% empty %}
         <p class="text-muted text-center" style="padding: 2rem;">No students have submitted this assignment yet.</p>
