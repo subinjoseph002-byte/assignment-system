@@ -121,7 +121,7 @@ def assignment_detail(request, pk):
             'form': form
         })
         
-    elif request.user.role == 'teacher':
+    elif request.user.role in ['teacher', 'admin']:
         submissions = assignment.submissions.all()
         return render(request, 'assignments/detail_teacher.html', {
             'assignment': assignment,
