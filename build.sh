@@ -7,5 +7,8 @@ pip install -r requirements.txt
 python manage.py collectstatic --no-input
 python manage.py migrate
 
-# Ensure uploads directory exists (equivalent to app.use('/uploads', express.static('uploads')))
+# Create admin user (Alternative to Shell)
+python create_admin.py
+
+# Ensure uploads directory exists
 mkdir -p uploads
